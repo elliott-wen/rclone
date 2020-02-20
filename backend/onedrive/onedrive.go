@@ -438,12 +438,12 @@ func (f *Fs) readMetaDataForPath(ctx context.Context, path string) (info *api.It
 		if len(path) == 0 {
 			opts = rest.Opts{
 				Method: "GET",
-				Path:   "/root",
+				Path:   "/approot",
 			}
 		} else {
 			opts = rest.Opts{
 				Method: "GET",
-				Path:   "/root:/" + rest.URLPathEscape(f.opt.Enc.FromStandardPath(path)),
+				Path:   "/approot:/" + rest.URLPathEscape(f.opt.Enc.FromStandardPath(path)),
 			}
 		}
 		err = f.pacer.Call(func() (bool, error) {
@@ -569,7 +569,7 @@ func NewFs(name, root string, m configmap.Mapper) (fs.Fs, error) {
 		opt:       *opt,
 		driveID:   opt.DriveID,
 		driveType: opt.DriveType,
-		srv:       rest.NewClient(oAuthClient).SetRoot(graphURL + "/drive/items"),
+		srv:       rest.NewClient(oAuthClient).SetRoot(graphURL + "/drive/special"),
 		pacer:     fs.NewPacer(pacer.NewDefault(pacer.MinSleep(minSleep), pacer.MaxSleep(maxSleep), pacer.DecayConstant(decayConstant))),
 	}
 	f.features = (&fs.Features{
@@ -1445,7 +1445,7 @@ func (o *Object) setModTime(ctx context.Context, modTime time.Time) (*api.Item, 
 	} else {
 		opts = rest.Opts{
 			Method: "PATCH",
-			Path:   "/root:/" + withTrailingColon(rest.URLPathEscape(o.srvPath())),
+			Path:   "/approot:/" + withTrailingColon(rest.URLPathEscape(o.srvPath())),
 		}
 	}
 	update := api.SetFileSystemInfo{
@@ -1520,7 +1520,7 @@ func (o *Object) createUploadSession(ctx context.Context, modTime time.Time) (re
 	} else {
 		opts = rest.Opts{
 			Method: "POST",
-			Path:   "/root:/" + rest.URLPathEscape(o.srvPath()) + ":/createUploadSession",
+			Path:   "/approot:/" + rest.URLPathEscape(o.srvPath()) + ":/createUploadSession",
 		}
 	}
 	createRequest := api.CreateUploadRequest{}
@@ -1727,7 +1727,7 @@ func (o *Object) uploadSinglepart(ctx context.Context, in io.Reader, size int64,
 	} else {
 		opts = rest.Opts{
 			Method:        "PUT",
-			Path:          "/root:/" + rest.URLPathEscape(o.srvPath()) + ":/content",
+			Path:          "/approot:/" + rest.URLPathEscape(o.srvPath()) + ":/content",
 			ContentLength: &size,
 			Body:          in,
 		}
