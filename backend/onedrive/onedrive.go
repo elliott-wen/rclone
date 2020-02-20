@@ -569,7 +569,7 @@ func NewFs(name, root string, m configmap.Mapper) (fs.Fs, error) {
 		opt:       *opt,
 		driveID:   opt.DriveID,
 		driveType: opt.DriveType,
-		srv:       rest.NewClient(oAuthClient).SetRoot(graphURL + "/drives/" + opt.DriveID),
+		srv:       rest.NewClient(oAuthClient).SetRoot(graphURL + "/drive/items"),
 		pacer:     fs.NewPacer(pacer.NewDefault(pacer.MinSleep(minSleep), pacer.MaxSleep(maxSleep), pacer.DecayConstant(decayConstant))),
 	}
 	f.features = (&fs.Features{
