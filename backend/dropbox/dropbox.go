@@ -371,12 +371,13 @@ func NewFs(name, root string, m configmap.Mapper) (fs.Fs, error) {
 
 // headerGenerator for dropbox sdk
 func (f *Fs) headerGenerator(hostType string, style string, namespace string, route string) map[string]string {
-	if f.ns == "" {
-		return map[string]string{}
-	}
-	return map[string]string{
-		"Dropbox-API-Path-Root": `{".tag": "namespace_id", "namespace_id": "` + f.ns + `"}`,
-	}
+	// if f.ns == "" {
+	// 	return map[string]string{}
+	// }
+	// return map[string]string{
+	// 	"Dropbox-API-Path-Root": `{".tag": "namespace_id", "namespace_id": "` + f.ns + `"}`,
+	// }
+	return map[string]string{}
 }
 
 // Sets root in f
